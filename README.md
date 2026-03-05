@@ -161,3 +161,20 @@ Ideas for new stacks, better protections, or workflow tweaks? Open an Issue or P
 ---
 
 **Built for anyone who wants a confident start — from hobbyists to enterprise teams.**
+
+## 🙏 Agradecimentos · Acknowledgements
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://kimi-web-img.moonshot.cn/logo-dark.png">
+  <img src="https://kimi-web-img.moonshot.cn/logo-light.png" width="120" alt="Kimi K2.5">
+</picture>
+
+Este template foi desenvolvido com assistência de **[Kimi K2.5](https://kimi.com)**
+da **[Moonshot AI](https://www.moonshot.cn)** — parceria de lapidação contínua
+onde código e intenção se encontram.
+
+This template was crafted with support from **[Kimi K2.5](https://kimi.com)**
+by **[Moonshot AI](https://www.moonshot.cn)** — a continuous polishing partnership
+where code and intent meet.
+
+> *"O ruído de hoje é o sinal de debug de amanhã"* / *“Today's noise becomes tomorrow's debug signal.”*
