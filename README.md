@@ -43,3 +43,4 @@ python src/main.py
 **⚠️ Atenção:** Nunca commite arquivos `.env`, `secrets/` ou chaves privadas. O `.gitignore` já protege, mas verifique sempre com `git status` antes de commitar.
 # teste CI manual
 # teste CI manual
+# Teste do workflow CI/CD - Thu Mar  5 03:59:45 PM -03 2026
