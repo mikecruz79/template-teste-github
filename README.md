@@ -87,3 +87,77 @@ Se tiver ideias de stacks adicionais, novas regras de segurança ou qualquer mel
 ---
 
 **Feito para quem precisa iniciar rápido e com confiança — do pessoal ao corporativo.**
+
+---
+
+# 🇬🇧 Professional Repository Template (English Version)
+
+This repository ships with the **`git-rep.sh`** script, an automated provisioner that creates production-ready GitHub repositories in minutes. The goal is to provide a minimal yet robust starting point aligned with industry best practices — perfect for side projects, MVPs, or private client engagements.
+
+## ⚙️ What the script delivers
+
+1. **Interactive prompts** for repo name, visibility, stack, description.
+2. **Base structure** (`src`, `tests`, `docs`, `scripts`, `.github`, etc.).
+3. **Opinionated README** with usage instructions and CI badge.
+4. **Stack setup** for Node.js, Python, Rust, Go, or a minimal option.
+5. **Secure CI/CD** (secret scanning, tests, validation steps).
+6. **Branch protections / guardrails** tailored for free/private accounts.
+7. **Automatic GitHub repo creation** with initial push.
+8. **Dependabot enabled** with the correct ecosystem for the chosen stack.
+
+## 🚀 Use cases
+
+- Create professional-grade repos without missing security basics.
+- Spin up trustworthy private repos for clients quickly.
+- Standardize kick-offs for internal initiatives or personal projects.
+- Adopt as an agency/freelancer template for repeatable work.
+
+## 📦 How to run locally
+
+```bash
+# Clone and enter the base project
+git clone https://github.com/mikecruz79/template-teste-github.git
+cd template-teste-github
+
+# Ensure execution permission
+chmod +x git-rep.sh
+
+# Run the provisioner
+./git-rep.sh
+```
+
+The script walks you through all required answers. Once finished, the new repository is already on GitHub — CI is enabled, protections applied, and Dependabot configured.
+
+> **Tip:** Because `git-rep.sh` lives in this repo, you can evolve it and push improvements that benefit every future project.
+
+## ✅ Requirements
+
+- `git` and `gh` installed + authenticated (`gh auth login`).
+- Permission to create repositories on GitHub (works even on free plans).
+- Docker installed (used for TruffleHog filesystem scanning in CI).
+
+## 🧩 Generated structure (example)
+
+```
+src/         → Source code
+tests/       → Automated tests
+docs/        → Documentation
+scripts/     → Utilities & automation
+.github/     → CI/CD workflows + Dependabot
+```
+
+## 🔐 Security & best practices baked in
+
+- Hardening `.gitignore` to avoid accidental secrets
+- TruffleHog via Docker (filesystem scan)
+- Pull request template with security checklist
+- Local guardrails + instructions for free accounts
+- Weekly Dependabot updates
+
+## 🤝 Contributing
+
+Ideas for new stacks, better protections, or workflow tweaks? Open an Issue or PR — the mission is to keep this template lean, straightforward, and battle-tested.
+
+---
+
+**Built for anyone who wants a confident start — from hobbyists to enterprise teams.**
