@@ -15,32 +15,30 @@ jobs:
         with:
           fetch-depth: 0  # Histórico completo
 
-      # Scan de segredos (filesystem, não depende de base/head)
-      - name: Scan de segredos
-        uses: trufflesecurity/trufflehog@main
-        with:
-          path: ./
-          extra_args: --only-verified --fail
-
-      # Setup específico da stack
+      - name: Scan de segredos (filesystem)
+        run: |
+          docker run --rm -v "$GITHUB_WORKSPACE:/tmp" -w /tmp \
+            ghcr.io/trufflesecurity/trufflehog:latest \
+            filesystem /tmp \
+            --only-verified
+        shell: bash
 
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
           cache: 'pip'
-
+      
       - name: Instala dependências
         run: |
           pip install -r requirements.txt 2>/dev/null || echo '⚠️ Sem requirements.txt'
-
+      
       - name: Testa sintaxe
         run: |
           python -m py_compile src/*.py 2>/dev/null || echo '⚠️ Validação de sintaxe'
-
+      
       - name: Roda testes
         run: python -m pytest 2>/dev/null || echo '⚠️ Sem pytest configurado'
-
 
       - name: Validação final
         run: |
