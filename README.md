@@ -164,10 +164,7 @@ Ideas for new stacks, better protections, or workflow tweaks? Open an Issue or P
 
 ## 🙏 Agradecimentos · Acknowledgements
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://kimi-web-img.moonshot.cn/logo-dark.png">
-  <img src="https://kimi-web-img.moonshot.cn/logo-light.png" width="120" alt="Kimi K2.5">
-</picture>
+![Kimi K2.5 logo](https://kimi-web-img.moonshot.cn/logo-light.png)
 
 Este template foi desenvolvido com assistência de **[Kimi K2.5](https://kimi.com)**
 da **[Moonshot AI](https://www.moonshot.cn)** — parceria de lapidação contínua
