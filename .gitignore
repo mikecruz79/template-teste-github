@@ -1,0 +1,29 @@
+# === SEGREDOS (nunca commitar) ===
+.env
+.env.*
+*.key
+*.pem
+secrets/
+credentials.json
+config/local*
+
+# === DEPENDÊNCIAS ===
+node_modules/
+__pycache__/
+.venv/
+target/
+vendor/
+
+# === SISTEMA ===
+.DS_Store
+.idea/
+.vscode/settings.json
+*.log
+
+# === BUILD/DADOS ===
+dist/
+build/
+bin/
+*.sqlite
+tmp/
+*.tmp
