@@ -1,5 +1,16 @@
 # 🛠️ Template de Repositório Profissional Automatizado
 
+<p align="left">
+  <a href="https://github.com/mikecruz79/template-teste-github/actions/workflows/seguranca.yml">
+    <img src="https://github.com/mikecruz79/template-teste-github/actions/workflows/seguranca.yml/badge.svg" alt="CI Status" />
+  </a>
+  <a href="https://github.com/mikecruz79/template-teste-github/security/dependabot">
+    <img src="https://img.shields.io/badge/Dependabot-ativo-0e8a16?logo=dependabot" alt="Dependabot" />
+  </a>
+  <img src="https://img.shields.io/badge/Stack-Multi-blue" alt="Multi Stack" />
+  <img src="https://img.shields.io/badge/Segurança-Pronta-ff5f5f" alt="Segurança" />
+</p>
+
 Este repositório contém o script **`git-rep.sh`**, um provisionador 100% automatizado para criar repositórios profissionais no GitHub em poucos minutos. O objetivo é oferecer um ponto de partida robusto, com o mínimo de fricção possível, já alinhado às boas práticas utilizadas em projetos reais — seja para estudos pessoais, MVPs ou trabalhos privados com clientes.
 
 ## ⚙️ O que o script entrega
@@ -27,11 +38,23 @@ O resultado é um repositório pronto para trabalhar de forma segura e profissio
 ## 📦 Como executar localmente
 
 ```bash
+# Clone e entre no projeto base
+git clone https://github.com/mikecruz79/template-teste-github.git
+cd template-teste-github
+
+# Garanta permissão de execução
 chmod +x git-rep.sh
+```
+
+Em seguida rode o script:
+
+```bash
 ./git-rep.sh
 ```
 
 O script guiará você com as perguntas necessárias. Assim que terminar, o repo já estará criado no GitHub, com push inicial, CI configurado e proteções aplicadas.
+
+> **Dica:** Como o `git-rep.sh` vive neste mesmo repositório (raiz do projeto), você pode modificar o script e versionar melhorias conforme suas necessidades.
 
 ## ✅ Pré-requisitos
 
