@@ -508,7 +508,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: seguranca-${{ github.workflow }}-${{ github.ref }}
+  group: seguranca-\${{ github.workflow }}-\${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
