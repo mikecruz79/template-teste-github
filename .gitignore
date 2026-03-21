@@ -19,6 +19,7 @@ vendor/
 .idea/
 .vscode/settings.json
 *.log
+.mike
 
 # === BUILD/DADOS ===
 dist/
@@ -27,3 +28,6 @@ bin/
 *.sqlite
 tmp/
 *.tmp
+
+# === DOCS INTERNOS ===
+docs/revisar-210326-1554pm.md

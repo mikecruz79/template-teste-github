@@ -75,10 +75,10 @@ scripts/     → Utilidades e automações
 ## 🔐 Segurança e boas práticas incluídas
 
 - `.gitignore` opinativo para evitar vazamento de credenciais
-- TruffleHog rodando via Docker (filesystem scan)
-- Template de PR com checklist de segurança
-- Proteções locais e instruções para contas free
-- Dependabot configurado semanalmente
+- TruffleHog automatizado via GitHub Action oficial (`v3.94.0`)
+- Template de PR com checklist de segurança detalhado
+- Proteções locais (pre-commit hooks) e instruções de branches
+- Dependabot configurado para `npm` e `github-actions`
 
 ## 🤝 Contribuindo
 

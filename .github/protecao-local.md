@@ -1,39 +1,52 @@
-# 🛡️ Proteções Locais (Funcionam no Plano Free)
+# 🛡️ Proteções locais
 
-## Pre-commit Hooks (Recomendado)
-Instale hooks locais para bloquear commits inseguros:
+Mesmo trabalhando com automações e CI, a TRAMA adota proteções locais para reduzir risco antes do código sair da máquina.
+
+## Pre-commit hooks
+
+Instale hooks locais para bloquear commits inseguros e erros evitáveis.
 
 ```bash
-# Instala pre-commit
-pip install pre-commit  # ou: npm install -g pre-commit
+pip install pre-commit
 
-# Cria arquivo .pre-commit-config.yaml
 cat > .pre-commit-config.yaml << 'HOOK'
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
       - id: detect-private-key
       - id: check-added-large-files
       - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
 
   - repo: https://github.com/trufflesecurity/trufflehog
-    rev: v3.59.0
+    rev: v3.90.5
     hooks:
       - id: trufflehog
-        args: ["--only-verified"]
+        args: ["--results=verified,unknown", "--fail"]
 HOOK
 
 pre-commit install
 pre-commit run --all-files
+```
 
-Checklist Manual (Free Tier)
-[ ] Sempre rode git status antes de commitar
-[ ] Verifique se .env está em vermelho (untracked), não verde (staged)
-[ ] Nunca commitar arquivos >100MB
-[ ] Use branches: git checkout -b feature/nome
-[ ] Abra PR mesmo sendo só você (força revisão)
-Workaround para Branch Protection (Free)
-Como repo privado free não tem branch protection nativo,
-configure no meu ~/.bashrc:
-alias git-push-safe='git diff --cached && read -p "Revisado? (s/n): " ok && [ "$ok" = "s" ] && git push'
+## Checklist manual antes de commitar
+
+* [ ] Rodei `git status`
+* [ ] `.env` e arquivos sensíveis não estão staged
+* [ ] Não há arquivos de segredo (`*.pem`, `*.key`, `secrets/`, `.env*`) no commit
+* [ ] Não há arquivos grandes sem necessidade
+* [ ] A mudança ficou em branch própria
+* [ ] Revisei o diff antes de subir
+
+## Fluxo recomendado
+
+* criar branch por mudança
+* abrir PR mesmo trabalhando sozinho
+* revisar o diff com calma antes de mergear
+
+## Observação importante
+
+Este repositório pode não contar com branch protection nativa no plano atual.
+Por isso, proteções locais, PR e revisão manual não são opcionais.

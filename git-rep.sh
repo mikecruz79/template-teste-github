@@ -347,14 +347,29 @@ EOF
 
     cat > .github/dependabot.yml << EOF
 version: 2
+
 updates:
   - package-ecosystem: "$ECOSYSTEM"
     directory: "/"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 10
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 5
     labels:
       - "dependencies"
+      - "security"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:15"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "ci"
       - "security"
 EOF
 
@@ -487,23 +502,32 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seguranca-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   cheque:
+    name: Secret scanning
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v5
         with:
-          fetch-depth: 0  # Histórico completo
+          fetch-depth: 0
 
-      - name: Scan de segredos (filesystem)
-        run: |
-          docker run --rm -v "$GITHUB_WORKSPACE:/tmp" -w /tmp \
-            ghcr.io/trufflesecurity/trufflehog:latest \
-            filesystem /tmp \
-            --only-verified
-        shell: bash
+      - name: Scan de segredos
+        uses: trufflesecurity/trufflehog@v3.94.0
+        with:
+          path: ./
+          extra_args: --results=verified,unknown
 
       # Setup específico da stack
 $WORKFLOW_SETUP
@@ -512,6 +536,7 @@ $WORKFLOW_SETUP
         run: |
           echo "✅ CI concluído com sucesso"
           echo "📊 Stack: $STACK_NAME"
+          echo "📊 Segurança básica ok"
 EOF
 
     git add .github/workflows/seguranca.yml
@@ -602,45 +627,58 @@ setup_protections() {
 
     # Cria arquivo de configuração local de proteções (funciona sempre)
     cat > .github/protecao-local.md << 'EOF'
-# 🛡️ Proteções Locais (Funcionam no Plano Free)
+# 🛡️ Proteções locais
 
-## Pre-commit Hooks (Recomendado)
-Instale hooks locais para bloquear commits inseguros:
+Mesmo trabalhando com automações e CI, a TRAMA adota proteções locais para reduzir risco antes do código sair da máquina.
 
-```bash
-# Instala pre-commit
-pip install pre-commit  # ou: npm install -g pre-commit
+## Pre-commit hooks
 
-# Cria arquivo .pre-commit-config.yaml
+Instale hooks locais para bloquear commits inseguros e erros evitáveis.
+
+\`\`\`bash
+pip install pre-commit
+
 cat > .pre-commit-config.yaml << 'HOOK'
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
       - id: detect-private-key
       - id: check-added-large-files
       - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
 
   - repo: https://github.com/trufflesecurity/trufflehog
-    rev: v3.59.0
+    rev: v3.90.5
     hooks:
       - id: trufflehog
-        args: ["--only-verified"]
+        args: ["--results=verified,unknown", "--fail"]
 HOOK
 
 pre-commit install
 pre-commit run --all-files
+\`\`\`
 
-Checklist Manual (Free Tier)
-[ ] Sempre rode git status antes de commitar
-[ ] Verifique se .env está em vermelho (untracked), não verde (staged)
-[ ] Nunca commitar arquivos >100MB
-[ ] Use branches: git checkout -b feature/nome
-[ ] Abra PR mesmo sendo só você (força revisão)
-Workaround para Branch Protection (Free)
-Como repo privado free não tem branch protection nativo,
-configure no meu ~/.bashrc:
-alias git-push-safe='git diff --cached && read -p "Revisado? (s/n): " ok && [ "$ok" = "s" ] && git push'
+## Checklist manual antes de commitar
+
+* [ ] Rodei \`git status\`
+* [ ] \`.env\` e arquivos sensíveis não estão staged
+* [ ] Não há arquivos de segredo (\`*.pem\`, \`*.key\`, \`secrets/\`, \`.env*\`) no commit
+* [ ] Não há arquivos grandes sem necessidade
+* [ ] A mudança ficou em branch própria
+* [ ] Revisei o diff antes de subir
+
+## Fluxo recomendado
+
+* criar branch por mudança
+* abrir PR mesmo trabalhando sozinho
+* revisar o diff com calma antes de mergear
+
+## Observação importante
+
+Este repositório pode não contar com branch protection nativa no plano atual.
+Por isso, proteções locais, PR e revisão manual não são opcionais.
 EOF
     git add .github/protecao-local.md
     git commit -m "docs: adiciona guia de proteções para plano free" || true
@@ -659,18 +697,36 @@ EOF
     # Cria ISSUE_TEMPLATE pra forçar revisão em PRs (funciona em free)
     mkdir -p .github/ISSUE_TEMPLATE
     cat > .github/pull_request_template.md << 'EOF'
-📋 Checklist de Segurança (Free Tier)
-[ ] Rodei git status e .env não está staged
-[ ] Não commitei arquivos de segredo (*.pem, *.key, secrets/)
-[ ] Testes passam localmente: python -m pytest (ou equivalente)
-[ ] Código revisado por mim mesmo antes de abrir PR
-🚨 Atenção Especial
-⚠️ Este repo é privado + plano free. Não há branch protection automático.
-Responsabilidade sua: Nunca mergeie código com segredos expostos.
-Descrição das mudanças:
-<!-- Explique o que foi alterado -->
-Como testar:
-<!-- Passos para validar -->
+## 📋 Resumo da mudança
+
+<!-- O que foi alterado e por quê -->
+
+## ✅ Checklist antes de abrir PR
+
+- [ ] Rodei \`git status\`
+- [ ] Não há \`.env\`, chaves ou arquivos sensíveis staged
+- [ ] Revisei meu próprio diff antes de abrir a PR
+- [ ] A mudança respeita a estrutura e a arquitetura do projeto
+- [ ] Atualizei ou criei testes quando necessário
+- [ ] Fluxos críticos seguem cobertos
+
+## 🧪 Como validar
+
+<!-- Passos claros para testar localmente -->
+
+Exemplo:
+- [ ] \`pnpm install\`
+- [ ] \`pnpm lint\`
+- [ ] \`pnpm build\`
+- [ ] \`pnpm test:e2e\` (quando aplicável)
+
+## 🔎 Pontos de atenção
+
+<!-- Riscos, decisões importantes, trade-offs, limites -->
+
+## 📎 Evidências
+
+<!-- Prints, vídeos, links de preview ou observações úteis -->
 EOF
     git add .github/pull_request_template.md
     git commit -m "chore: adiciona template de PR com checklist de segurança" || true
