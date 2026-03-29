@@ -178,4 +178,4 @@ This template was crafted with support from **[Kimi K2.5](https://kimi.com)**
 by **[Moonshot AI](https://www.moonshot.cn)** — a continuous polishing partnership
 where code and intent meet.
 
-> *"O ruído de hoje é o sinal de debug de amanhã"* / *“Today's noise becomes tomorrow's debug signal.”*
+> _"O ruído de hoje é o sinal de debug de amanhã"_ / _“Today's noise becomes tomorrow's debug signal.”_

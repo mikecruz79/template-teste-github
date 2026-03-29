@@ -189,6 +189,11 @@ EOF
 console.log("🚀 Projeto iniciado");
 EOF
 
+            # Tenta gerar o package-lock.json para garantir que o CI no GitHub Actions com \`npm ci\` funcione!
+            if command -v npm &> /dev/null; then
+                npm install --package-lock-only --no-fund --no-audit --silent > /dev/null 2>&1 || true
+            fi
+
             WORKFLOW_SETUP="""
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -731,7 +736,11 @@ EOF
     git add .github/pull_request_template.md
     git commit -m "chore: adiciona template de PR com checklist de segurança" || true
 
-    print_success "Proteções configuradas para modo free/privado"
+    # Garante que as proteções locais sejam enviadas ao GitHub imediatamente
+    print_info "Sincronizando proteções para a branch $branch (push)..."
+    git push origin "$branch" || print_warning "Aviso: falha ao fazer push automático das proteções."
+
+    print_success "Proteções configuradas para modo free/privado e enviadas!"
 }
 
 # ============================================
