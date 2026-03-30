@@ -27,7 +27,7 @@ jobs:
           fetch-depth: 0
 
       - name: Scan de segredos
-        uses: trufflesecurity/trufflehog@v3.94.0
+        uses: trufflesecurity/trufflehog@v3.94.1
         with:
           path: ./
           extra_args: --results=verified,unknown
